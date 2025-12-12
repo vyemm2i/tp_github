@@ -121,8 +121,8 @@ jobs:
           push: true  # Cette étape pousse l'image vers le registry
 
           tags: |
-            ghcr.io/${{ github.repository }}:latest
-            ghcr.io/${{ github.repository }}:v1.0.0-${{ github.run_number }}
+            ghcr.io/${{ vars.DOCKERHUB_USERNAM }}:latest
+            ghcr.io/${{ vars.DOCKERHUB_USERNAM }}:v1.0.0-${{ github.run_number }}
 
       - name: logout
         if: always()
