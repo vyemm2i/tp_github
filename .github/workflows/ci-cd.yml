@@ -94,8 +94,8 @@ jobs:
         uses: docker/login-action@v3
         with:
           registry: ghcr.io
-          username: ${{ github.actor }}
-          password: ${{ secrets.GITHUB_TOKEN }}
+          username: ${{ vars.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_PASSWORD }}
 
       # TODO: Build de l'image Docker avec les tags appropriés
       # Tags suggérés:
@@ -109,8 +109,8 @@ jobs:
           push: false
 
           tags: |
-            ghcr.io/${{ github.repository }}:latest
-            ghcr.io/${{ github.repository }}:v1.0.0-${{ github.run_number }}
+            ghcr.io/${{ vars.DOCKERHUB_USERNAME }}:latest
+            ghcr.io/${{ secrets.DOCKERHUB_PASSWORD }}:v1.0.0-${{ github.run_number }}
 
       # TODO: Push de l'image vers le registry
       - name: Push image vers Registry
