@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BugTrack - Système de Suivi de Bugs</title>
+    <link rel="stylesheet" href="/css/styles.css">
+</head>
+<body>
+    <div class="app">
+        <!-- Header -->
+        <header class="header">
+            <div class="header-left">
+                <h1>🐛 BugTrack</h1>
+                <span class="tagline">Système de Suivi de Bugs</span>
+            </div>
+            <div class="header-right">
+                <div class="user-info" data-testid="user-info">
+                    <span class="user-avatar" data-testid="user-avatar">👤</span>
+                    <select id="current-user" data-testid="user-select">
+                        <option value="alice">Alice Martin (Dev)</option>
+                        <option value="bob">Bob Dupont (QA)</option>
+                        <option value="charlie">Charlie Durand (Lead)</option>
+                    </select>
+                </div>
+            </div>
+        </header>
+
+        <main class="main-content">
+            <!-- Sidebar avec filtres -->
+            <aside class="sidebar">
+                <div class="sidebar-section">
+                    <h3>Filtres</h3>
+
+                    <div class="filter-group">
+                        <label>Statut</label>
+                        <select id="filter-status" data-testid="filter-status">
+                            <option value="all">Tous les statuts</option>
+                            <option value="open">🔴 Ouvert</option>
+                            <option value="in_progress">🟡 En cours</option>
+                            <option value="resolved">🟢 Résolu</option>
+                            <option value="closed">⚫ Fermé</option>
+                            <option value="reopened">🟠 Réouvert</option>
+                        </select>
+                    </div>
+
+                    <div class="filter-group">
+                        <label>Priorité</label>
+                        <select id="filter-priority" data-testid="filter-priority">
+                            <option value="all">Toutes les priorités</option>
+                            <option value="critical">🔥 Critique</option>
+                            <option value="high">⬆️ Haute</option>
+                            <option value="medium">➡️ Moyenne</option>
+                            <option value="low">⬇️ Basse</option>
+                        </select>
+                    </div>
+
+                    <div class="filter-group">
+                        <label>Sévérité</label>
+                        <select id="filter-severity" data-testid="filter-severity">
+                            <option value="all">Toutes les sévérités</option>
+                            <option value="blocker">Bloquant</option>
+                            <option value="major">Majeur</option>
+                            <option value="minor">Mineur</option>
+                            <option value="trivial">Trivial</option>
+                        </select>
+                    </div>
+
+                    <div class="filter-group">
+                        <label>Assigné à</label>
+                        <select id="filter-assignee" data-testid="filter-assignee">
+                            <option value="all">Tout le monde</option>
+                            <option value="alice">Alice Martin</option>
+                            <option value="bob">Bob Dupont</option>
+                            <option value="charlie">Charlie Durand</option>
+                            <option value="unassigned">Non assigné</option>
+                        </select>
+                    </div>
+
+                    <div class="filter-group">
+                        <label>Recherche</label>
+                        <input type="text" id="filter-search" placeholder="Rechercher..." data-testid="filter-search">
+                    </div>
+
+                    <button id="clear-filters" class="btn btn-secondary" data-testid="clear-filters">
+                        Réinitialiser les filtres
+                    </button>
+                </div>
+
+                <div class="sidebar-section stats-section">
+                    <h3>Statistiques</h3>
+                    <div class="stats-grid" data-testid="stats">
+                        <div class="stat-item">
+                            <span class="stat-value" id="stat-total">0</span>
+                            <span class="stat-label">Total</span>
+                        </div>
+                        <div class="stat-item stat-open">
+                            <span class="stat-value" id="stat-open">0</span>
+                            <span class="stat-label">Ouverts</span>
+                        </div>
+                        <div class="stat-item stat-progress">
+                            <span class="stat-value" id="stat-progress">0</span>
+                            <span class="stat-label">En cours</span>
+                        </div>
+                        <div class="stat-item stat-resolved">
+                            <span class="stat-value" id="stat-resolved">0</span>
+                            <span class="stat-label">Résolus</span>
+                        </div>
+                    </div>
+                </div>
+            </aside>
+
+            <!-- Contenu principal -->
+            <section class="content">
+                <!-- Barre d'actions -->
+                <div class="action-bar">
+                    <button id="new-bug-btn" class="btn btn-primary" data-testid="new-bug-btn">
+                        + Nouveau Bug
+                    </button>
+                    <div class="view-toggle" data-testid="view-toggle">
+                        <button class="view-btn active" data-view="list" data-testid="view-list">📋 Liste</button>
+                        <button class="view-btn" data-view="board" data-testid="view-board">📊 Tableau</button>
+                    </div>
+                    <div class="sort-options">
+                        <label>Trier par:</label>
+                        <select id="sort-by" data-testid="sort-by">
+                            <option value="created_desc">Plus récent</option>
+                            <option value="created_asc">Plus ancien</option>
+                            <option value="priority">Priorité</option>
+                            <option value="updated">Dernière mise à jour</option>
+                        </select>
+                    </div>
+                </div>
+
+                <!-- Vue Liste -->
+                <div id="list-view" class="bug-list" data-testid="bug-list">
+                    <!-- Les bugs seront injectés ici -->
+                </div>
+
+                <!-- Vue Tableau Kanban -->
+                <div id="board-view" class="bug-board hidden" data-testid="bug-board">
+                    <div class="board-column" data-status="open">
+                        <h4>🔴 Ouvert</h4>
+                        <div class="column-content" data-testid="column-open"></div>
+                    </div>
+                    <div class="board-column" data-status="in_progress">
+                        <h4>🟡 En cours</h4>
+                        <div class="column-content" data-testid="column-progress"></div>
+                    </div>
+                    <div class="board-column" data-status="resolved">
+                        <h4>🟢 Résolu</h4>
+                        <div class="column-content" data-testid="column-resolved"></div>
+                    </div>
+                    <div class="board-column" data-status="closed">
+                        <h4>⚫ Fermé</h4>
+                        <div class="column-content" data-testid="column-closed"></div>
+                    </div>
+                </div>
+
+                <!-- Message si aucun bug -->
+                <div id="empty-state" class="empty-state hidden" data-testid="empty-state">
+                    <span class="empty-icon">🎉</span>
+                    <p>Aucun bug trouvé !</p>
+                    <p class="empty-hint">Créez un nouveau bug ou modifiez vos filtres.</p>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <!-- Modal Création/Édition de Bug -->
+    <div id="bug-modal" class="modal hidden" data-testid="bug-modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 id="modal-title">Nouveau Bug</h2>
+                <button class="modal-close" data-testid="modal-close">&times;</button>
+            </div>
+            <form id="bug-form" data-testid="bug-form">
+                <input type="hidden" id="bug-id" name="id">
+
+                <div class="form-row">
+                    <div class="form-group full-width">
+                        <label for="bug-title">Titre *</label>
+                        <input type="text" id="bug-title" name="title" required
+                               placeholder="Ex: Erreur 500 sur la page de connexion"
+                               data-testid="bug-title">
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="bug-priority">Priorité *</label>
+                        <select id="bug-priority" name="priority" required data-testid="bug-priority">
+                            <option value="">Sélectionner...</option>
+                            <option value="critical">🔥 Critique</option>
+                            <option value="high">⬆️ Haute</option>
+                            <option value="medium">➡️ Moyenne</option>
+                            <option value="low">⬇️ Basse</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="bug-severity">Sévérité *</label>
+                        <select id="bug-severity" name="severity" required data-testid="bug-severity">
+                            <option value="">Sélectionner...</option>
+                            <option value="blocker">Bloquant</option>
+                            <option value="major">Majeur</option>
+                            <option value="minor">Mineur</option>
+                            <option value="trivial">Trivial</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="bug-assignee">Assigné à</label>
+                        <select id="bug-assignee" name="assignee" data-testid="bug-assignee">
+                            <option value="">Non assigné</option>
+                            <option value="alice">Alice Martin</option>
+                            <option value="bob">Bob Dupont</option>
+                            <option value="charlie">Charlie Durand</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="bug-environment">Environnement</label>
+                        <select id="bug-environment" name="environment" data-testid="bug-environment">
+                            <option value="production">Production</option>
+                            <option value="staging">Staging</option>
+                            <option value="development">Développement</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group full-width">
+                        <label for="bug-description">Description *</label>
+                        <textarea id="bug-description" name="description" rows="4" required
+                                  placeholder="Décrivez le bug en détail..."
+                                  data-testid="bug-description"></textarea>
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group full-width">
+                        <label for="bug-steps">Étapes de reproduction</label>
+                        <textarea id="bug-steps" name="steps" rows="3"
+                                  placeholder="1. Aller sur la page X&#10;2. Cliquer sur le bouton Y&#10;3. Observer l'erreur"
+                                  data-testid="bug-steps"></textarea>
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="bug-expected">Comportement attendu</label>
+                        <textarea id="bug-expected" name="expected" rows="2"
+                                  placeholder="Ce qui devrait se passer..."
+                                  data-testid="bug-expected"></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label for="bug-actual">Comportement actuel</label>
+                        <textarea id="bug-actual" name="actual" rows="2"
+                                  placeholder="Ce qui se passe réellement..."
+                                  data-testid="bug-actual"></textarea>
+                    </div>
+                </div>
+
+                <div class="form-actions">
+                    <button type="button" class="btn btn-secondary" data-testid="cancel-btn" id="cancel-btn">
+                        Annuler
+                    </button>
+                    <button type="submit" class="btn btn-primary" data-testid="submit-btn">
+                        Enregistrer
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Modal Détail du Bug -->
+    <div id="detail-modal" class="modal hidden" data-testid="detail-modal">
+        <div class="modal-content modal-large">
+            <div class="modal-header">
+                <h2 id="detail-title">Détail du Bug</h2>
+                <button class="modal-close" data-testid="detail-close">&times;</button>
+            </div>
+            <div class="detail-content" id="detail-content" data-testid="detail-content">
+                <!-- Contenu dynamique -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast notifications -->
+    <div id="toast-container" class="toast-container" data-testid="toast-container"></div>
+
+    <script src="/js/app.js"></script>
+</body>
+</html>

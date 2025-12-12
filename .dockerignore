@@ -1,0 +1,14 @@
+node_modules
+npm-debug.log
+.git
+.gitignore
+.env
+.env.*
+*.md
+cypress/videos
+cypress/screenshots
+.nyc_output
+coverage
+.vscode
+.idea
+*.log

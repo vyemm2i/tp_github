@@ -1,0 +1,80 @@
+{
+  "validBug": {
+    "title": "Bug de test valide",
+    "description": "Description complète du bug de test",
+    "priority": "medium",
+    "severity": "minor",
+    "environment": "staging"
+  },
+  "criticalBug": {
+    "title": "Bug critique bloquant",
+    "description": "Ce bug bloque toute l'application",
+    "priority": "critical",
+    "severity": "blocker",
+    "environment": "production",
+    "steps": "1. Ouvrir l'application\n2. Le bug apparaît",
+    "expected": "L'application fonctionne",
+    "actual": "L'application plante"
+  },
+  "minorBug": {
+    "title": "Petit bug cosmétique",
+    "description": "Un léger désalignement visuel",
+    "priority": "low",
+    "severity": "trivial",
+    "environment": "development"
+  },
+  "bugWithAllFields": {
+    "title": "Bug complet avec tous les champs",
+    "description": "Description détaillée du problème rencontré",
+    "priority": "high",
+    "severity": "major",
+    "assignee": "alice",
+    "environment": "staging",
+    "steps": "1. Étape 1\n2. Étape 2\n3. Étape 3",
+    "expected": "Le comportement attendu",
+    "actual": "Le comportement actuel observé"
+  },
+  "multipleBugs": [
+    {
+      "title": "Premier bug de la liste",
+      "description": "Description 1",
+      "priority": "high",
+      "severity": "major"
+    },
+    {
+      "title": "Deuxième bug de la liste",
+      "description": "Description 2",
+      "priority": "medium",
+      "severity": "minor"
+    },
+    {
+      "title": "Troisième bug de la liste",
+      "description": "Description 3",
+      "priority": "low",
+      "severity": "trivial"
+    }
+  ],
+  "invalidBug": {
+    "title": "",
+    "description": "",
+    "priority": "invalid",
+    "severity": "invalid"
+  },
+  "users": {
+    "alice": {
+      "id": "alice",
+      "name": "Alice Martin",
+      "role": "Dev"
+    },
+    "bob": {
+      "id": "bob",
+      "name": "Bob Dupont",
+      "role": "QA"
+    },
+    "charlie": {
+      "id": "charlie",
+      "name": "Charlie Durand",
+      "role": "Lead"
+    }
+  }
+}

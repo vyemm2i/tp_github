@@ -1,0 +1,34 @@
+{
+  "name": "bug-tracker-cicd",
+  "version": "1.0.0",
+  "description": "Application de suivi de bugs pour TP CI/CD - Testeurs en alternance",
+  "main": "src/server.js",
+  "scripts": {
+    "start": "node src/server.js",
+    "dev": "nodemon src/server.js",
+    "test": "cypress run",
+    "test:open": "cypress open",
+    "test:ci": "start-server-and-test start http://localhost:3000/api/health test"
+  },
+  "keywords": [
+    "bug-tracker",
+    "cicd",
+    "cypress",
+    "testing",
+    "qa"
+  ],
+  "author": "TP CI/CD - Testeurs Alternance",
+  "license": "MIT",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "express": "^4.18.2"
+  },
+  "devDependencies": {
+    "cypress": "^13.6.0",
+    "nodemon": "^3.0.2",
+    "start-server-and-test": "^2.0.3"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  }
+}
