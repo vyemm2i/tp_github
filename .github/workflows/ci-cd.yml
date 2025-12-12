@@ -121,8 +121,8 @@ jobs:
           push: true  # Cette étape pousse l'image vers le registry
 
           tags: |
-            ${{ vars.DOCKERHUB_USERNAM }}:latest
-            ${{ vars.DOCKERHUB_USERNAM }}:v1.0.0-${{ github.run_number }}
+            ${{ vars.DOCKERHUB_USERNAME }}:latest
+            ${{ vars.DOCKERHUB_USERNAME }}:v1.0.0-${{ github.run_number }}
 
       - name: logout
         if: always()
