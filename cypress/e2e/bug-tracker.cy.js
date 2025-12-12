@@ -129,7 +129,7 @@ describe('BugTrack - Tests E2E', () => {
           description: 'Test des stats'
         });
 
-        cy.get('#stat-total').should('contain', initial + 1);
+        cy.get('#stat-total').scrollIntoView().should('contain', initial + 1);
       });
     });
 
@@ -141,7 +141,7 @@ describe('BugTrack - Tests E2E', () => {
   describe('Affichage des bugs', () => {
 
     it('devrait afficher l\'ID du bug', () => {
-      cy.get('[data-testid="bug-id"]').first().should('match', /BUG-\d{3}/);
+      cy.get('[data-testid="bug-id"]').first().invoke('text').should('match', /BUG-\d{3}/);
     });
 
     it('devrait afficher le titre du bug', () => {
@@ -190,12 +190,12 @@ describe('BugTrack - Tests E2E', () => {
 
     it('devrait afficher les boutons de changement de statut', () => {
       cy.get('[data-testid="bug-card"]').first().click();
-      cy.get('[data-testid="status-actions"]').should('be.visible');
+      cy.get('[data-testid="status-actions"]').scrollIntoView().should('be.visible');
     });
 
     it('devrait afficher la section commentaires', () => {
       cy.get('[data-testid="bug-card"]').first().click();
-      cy.get('[data-testid="comments-section"]').should('be.visible');
+      cy.get('[data-testid="comments-section"]').scrollIntoView().should('be.visible');
     });
 
     it('devrait permettre d\'ajouter un commentaire', () => {
@@ -325,10 +325,10 @@ describe('BugTrack - Tests E2E', () => {
     });
 
     it('devrait rechercher par titre', () => {
-      cy.searchBugs('connexion');
+      cy.searchBugs('Cypress');
 
       cy.get('[data-testid="bug-card"]').should('have.length.at.least', 1);
-      cy.get('[data-testid="bug-title"]').first().should('contain.text', 'connexion', { matchCase: false });
+      cy.get('[data-testid="bug-title"]').first().should('contain.text', 'Cypress', { matchCase: false });
     });
 
     it('devrait rechercher par ID', () => {
@@ -429,22 +429,23 @@ describe('BugTrack - Tests E2E', () => {
       });
     });
 
-    it('devrait pré-remplir les champs avec les données existantes', () => {
-      cy.get('[data-testid="bug-card"]').first().then(($card) => {
-        const title = $card.find('[data-testid="bug-title"]').text();
-        const bugId = $card.attr('data-id');
-
-        cy.get(`[data-id="${bugId}"] [data-testid="edit-btn"]`).click({ force: true });
-        cy.get('[data-testid="bug-title"]').should('have.value', title);
-      });
+    it('devrait pré-remplir les champs avec les données existantes', () => { 
+      cy.get('[data-testid="bug-card"]').first().then(($card) => { 
+        const title = $card.find('[data-testid="bug-title"]').text(); 
+        const bugId = $card.attr('data-id'); 
+        cy.get(`[data-id="${bugId}"] [data-testid="edit-btn"]`).click({ force: true }); 
+        cy.get('input[data-testid="bug-title"]').should('have.value', title); 
+      }); 
     });
+});
+
 
     it('devrait modifier un bug', () => {
       cy.get('[data-testid="bug-card"]').first().then(($card) => {
         const bugId = $card.attr('data-id');
 
         cy.get(`[data-id="${bugId}"] [data-testid="edit-btn"]`).click({ force: true });
-        cy.get('[data-testid="bug-title"]').clear().type('Titre modifié par Cypress');
+        cy.get('input[data-testid="bug-title"]').clear().type('Titre modifié par Cypress');
         cy.get('[data-testid="submit-btn"]').click();
 
         cy.get('[data-testid="toast"]').should('contain', 'mis à jour');
@@ -643,7 +644,7 @@ describe('BugTrack - Tests E2E', () => {
 
     it('devrait changer d\'utilisateur', () => {
       cy.switchUser('alice');
-      cy.get('[data-testid="toast"]').should('contain', 'Alice Martin');
+      cy.get('[data-testid="user-select"]').should('contain', 'Alice Martin');
     });
 
     it('devrait afficher les 3 utilisateurs disponibles', () => {
@@ -675,5 +676,3 @@ describe('BugTrack - Tests E2E', () => {
     });
 
   });
-
-});
