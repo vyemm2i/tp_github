@@ -109,12 +109,8 @@ jobs:
           push: false
 
           tags: |
-
-            ghcr.io/${{ env.DOCKER_IMAGE_NAME }}:latest
-            ghcr.io/${{ env.DOCKER_IMAGE_NAME }}:v1.0.0-${{ github.run_number }}
-
-            #ghcr.io/${{ github.repository }}:latest
-            #ghcr.io/${{ github.repository }}:v1.0.0-${{ github.run_number }}
+            ghcr.io/${{ github.repository }}:latest
+            ghcr.io/${{ github.repository }}:v1.0.0-${{ github.run_number }}
 
       # TODO: Push de l'image vers le registry
       - name: Push image vers Registry
